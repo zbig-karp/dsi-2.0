@@ -2,10 +2,8 @@ library(tidyverse)
 
 ## -----Reading in the data-----
 
-load("ict-2021-data.RData")
-ict <- . 
-ict <- ict %>%
-  filter(!(country %in% c("NO", "IS")), agecls %in% 2:7)
+load("ict-2021-sub.RData")
+ict <- ict_sub
 
 # Some recoding
 ict <- ict %>%
