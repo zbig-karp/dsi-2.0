@@ -42,25 +42,6 @@ dsk_cc <- ict %>%
   mutate_at(.vars = vars(iuem, iuph1, iuchat1, iusnet, iupol2, iuvote),
             .funs = ~replace(., iu != 1 | is.na(iu), NA)) 
 
-cc_cors <- dsk_cc %>%
-  filter(iu == 1, !(country %in% c("NO", "IS"))) %>%
-  select(iuem:iuvote) %>%
-  cor(use = "pairwise")
-
-cc_taus <- dsk_cc %>%
-  filter(iu == 1, !(country %in% c("NO", "IS"))) %>%
-  drop_na() %>%
-  select(iuem:iuvote) %>% 
-  GKtauDataframe()
-
-pol1 <- xtabs(ind_wght ~ iupol2 + iuvote, data = dsk_cc, subset = iu == 1 & !(country %in% c("NO", "IS")))
-pol2 <- xtabs(ind_wght ~ iupol2 + iuvote + country, data = dsk_cc, subset = iu == 1 & !(country %in% c("NO", "IS")))
-save(list = c("pol1", "pol2"), file = "dsk-cc-civpart.RData")
-
-jpeg(filename = "dsk-cc-correlations.jpeg", quality = 90)
-corrplot.mixed(cc_cors, order = "hclust")
-dev.off()
-
 dsk_cc <- dsk_cc%>%
   pivot_longer(cols = iuem:iuvote, names_to = "item", values_to = "response") %>%
   group_by(country, ind_seq_nr, ind_wght, iu) %>%
@@ -97,13 +78,6 @@ dsk_safe <- ict %>%
             .funs = ~replace(., is.na(.), 0)) %>%
   mutate_at(.vars = vars(maps_rps, maps_rrgl, maps_lap, maps_raad, maps_cwsc, pcook1),
             .funs = ~replace(., iu != 1 | is.na(iu), NA))
-
-safe_cors <- dsk_safe %>%
-  filter(iu == 1, !(country %in% c("NO", "IS"))) %>%
-  select(maps_rps:pcook1) %>%
-  cor(use = "pairwise")
-
-corrplot.mixed(safe_cors, addgrid.col = TRUE, order = "hclust")
 
 dsk_safe <- dsk_safe %>%
   pivot_longer(cols = maps_rps:pcook1, names_to = "item", values_to = "response") %>%
