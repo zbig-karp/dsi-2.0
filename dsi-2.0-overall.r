@@ -162,6 +162,3 @@ dsk <- dsk %>%
 dsk <- dsk %>%
   mutate(dsk_all = replace(dsk_all, iu != 1 | is.na(iu), "Not applicable"),
          dsk_all = factor(dsk_all, levels = c("Not applicable", "None", "Limited", "Narrow", "Low", "Basic", "Above basic"))) 
-
-save(dsk, file = "dsi-2.0-all-areas.RData")
-
